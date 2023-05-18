@@ -69,7 +69,7 @@ public class Game implements Serializable, IGame {
     /**
      * A UUID to identify this game instance.
      */
-    public UUID uuid = UUID.randomUUID();
+    public static UUID uuid = UUID.randomUUID();
 
     /**
      * Stores the version of MM, so that it can be serialized in saved games.
@@ -1898,7 +1898,6 @@ public class Game implements Serializable, IGame {
                 hasLooped = true;
             }
         }
-        // return getFirstEntityNum(turn);
         return Entity.NONE;
     }
 
@@ -1932,7 +1931,6 @@ public class Game implements Serializable, IGame {
                 hasLooped = true;
             }
         }
-        // return getFirstEntityNum(turn);
         return -1;
     }
 
