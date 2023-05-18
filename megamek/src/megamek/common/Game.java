@@ -1283,19 +1283,18 @@ public class Game implements Serializable, IGame {
         if (entity instanceof Mech) {
             ((Mech) entity).setBAGrabBars();
             ((Mech) entity).setProtomechClampMounts();
-        }
-        if (entity instanceof Tank) {
+        } else if (entity instanceof Tank) {
             ((Tank) entity).setBAGrabBars();
             ((Tank) entity).setTrailerHitches();
         }
 
         // Add magnetic clamp mounts
-        if ((entity instanceof Mech) && !entity.isOmni()
-                && !entity.hasBattleArmorHandles()) {
-            entity.addTransporter(new ClampMountMech());
-        } else if ((entity instanceof Tank) && !entity.isOmni()
-                && !entity.hasBattleArmorHandles()) {
-            entity.addTransporter(new ClampMountTank());
+        if (!entity.hasBattleArmorHandles()) {
+            if (entity instanceof Mech && !entity.isOmni()) {
+                entity.addTransporter(new ClampMountMech());
+            } else if (entity instanceof Tank && !entity.isOmni()) {
+                entity.addTransporter(new ClampMountTank());
+            }
         }
 
         entity.setGameOptions();
@@ -1321,18 +1320,13 @@ public class Game implements Serializable, IGame {
         }
 
         // And... lets get this straight now.
-        if ((entity instanceof Mech)
-            && getOptions().booleanOption(OptionsConstants.RPG_CONDITIONAL_EJECTION)) {
-            ((Mech) entity).setAutoEject(true);
-            if (((Mech) entity).hasCase()
-                || ((Mech) entity).hasCASEIIAnywhere()) {
-                ((Mech) entity).setCondEjectAmmo(false);
-            } else {
-                ((Mech) entity).setCondEjectAmmo(true);
-            }
-            ((Mech) entity).setCondEjectEngine(true);
-            ((Mech) entity).setCondEjectCTDest(true);
-            ((Mech) entity).setCondEjectHeadshot(true);
+        if (entity instanceof Mech && getOptions().booleanOption(OptionsConstants.RPG_CONDITIONAL_EJECTION)) {
+            Mech mech = (Mech) entity;
+            mech.setAutoEject(true);
+            mech.setCondEjectAmmo(mech.hasCase() || mech.hasCASEIIAnywhere());
+            mech.setCondEjectEngine(true);
+            mech.setCondEjectCTDest(true);
+            mech.setCondEjectHeadshot(true);
         }
 
         assert (entities.size() == entityIds.size()) : "Add Entity failed";
