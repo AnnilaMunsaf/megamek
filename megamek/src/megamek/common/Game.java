@@ -1143,7 +1143,6 @@ public class Game implements Serializable, IGame {
     /**
      * Returns an enumeration of entities that have retreated
      */
- // TODO: Correctly implement "Captured" Entities
     public Enumeration<Entity> getRetreatedEntities() {
         Vector<Entity> sanctuary = new Vector<Entity>();
 
