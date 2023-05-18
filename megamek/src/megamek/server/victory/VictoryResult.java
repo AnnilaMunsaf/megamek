@@ -17,6 +17,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import megamek.common.IPlayer;
 import megamek.common.Report;
@@ -28,9 +29,9 @@ import megamek.common.Report;
 public class VictoryResult implements IResult {
     protected boolean victory;
     protected Throwable tr;
-    protected ArrayList<Report> reports = new ArrayList<Report>();
-    protected HashMap<Integer, Double> playerScore = new HashMap<Integer, Double>();
-    protected HashMap<Integer, Double> teamScore = new HashMap<Integer, Double>();
+    protected ArrayList<Report> reports = new ArrayList<>();
+    protected HashMap<Integer, Double> playerScore = new HashMap<>();
+    protected HashMap<Integer, Double> teamScore = new HashMap<>();
     protected double hiScore = 0;
 
     protected VictoryResult(boolean win) {
@@ -61,14 +62,14 @@ public class VictoryResult implements IResult {
         double max = Double.MIN_VALUE;
         int maxPlayer = IPlayer.PLAYER_NONE;
         boolean draw = false;
-        for (int i : playerScore.keySet()) {
-            if (playerScore.get(i) == max) {
+        for (Map.Entry<Integer, Double> entry : playerScore.entrySet()) {
+            if (entry.getValue() == max) {
                 draw = true;
             }
-            if (playerScore.get(i) > max) {
+            if (entry.getValue() > max) {
                 draw = false;
-                max = playerScore.get(i);
-                maxPlayer = i;
+                max = entry.getValue();
+                maxPlayer = entry.getKey();
             }
         }
         if (draw)
