@@ -40,17 +40,17 @@ public final class Player extends TurnOrdered implements IPlayer {
     private boolean ghost = false; // disconnected player
     private boolean observer = false;
 
-    private boolean see_entire_board = false; // Player can observe double blind games
+    private boolean entireBoardVisible = false; // Player can observe double blind games
 
     // these are game-specific, and maybe should be separate from the player object
     private int startingPos = Board.START_ANY;
 
     // number of minefields
-    private int num_mf_conv = 0;
-    private int num_mf_cmd = 0;
-    private int num_mf_vibra = 0;
-    private int num_mf_active = 0;
-    private int num_mf_inferno = 0;
+    private int mfConvCount = 0;
+    private int mfCmdCount = 0;
+    private int mfVibraCount = 0;
+    private int mfActiveCount = 0;
+    private int mfInfernoCount = 0;
 
     // hexes that are automatically hit by artillery
     private Vector<Coords> artyAutoHitHexes = new Vector<>();
@@ -116,57 +116,57 @@ public final class Player extends TurnOrdered implements IPlayer {
 
     @Override
     public boolean hasMinefields() {
-        return (num_mf_cmd > 0) || (num_mf_conv > 0) || (num_mf_vibra > 0) || (num_mf_active > 0) || (num_mf_inferno > 0);
+        return (mfCmdCount > 0) || (mfConvCount > 0) || (mfVibraCount > 0) || (mfActiveCount > 0) || (mfInfernoCount > 0);
     }
 
     @Override
     public void setNbrMFConventional(int nbrMF) {
-        num_mf_conv = nbrMF;
+        mfConvCount = nbrMF;
     }
 
     @Override
     public void setNbrMFCommand(int nbrMF) {
-        num_mf_cmd = nbrMF;
+        mfCmdCount = nbrMF;
     }
 
     @Override
     public void setNbrMFVibra(int nbrMF) {
-        num_mf_vibra = nbrMF;
+        mfVibraCount = nbrMF;
     }
 
     @Override
     public void setNbrMFActive(int nbrMF) {
-        num_mf_active = nbrMF;
+        mfActiveCount = nbrMF;
     }
 
     @Override
     public void setNbrMFInferno(int nbrMF) {
-        num_mf_inferno = nbrMF;
+        mfInfernoCount = nbrMF;
     }
 
     @Override
     public int getNbrMFConventional() {
-        return num_mf_conv;
+        return mfConvCount;
     }
 
     @Override
     public int getNbrMFCommand() {
-        return num_mf_cmd;
+        return mfCmdCount;
     }
 
     @Override
     public int getNbrMFVibra() {
-        return num_mf_vibra;
+        return mfVibraCount;
     }
 
     @Override
     public int getNbrMFActive() {
-        return num_mf_active;
+        return mfActiveCount;
     }
 
     @Override
     public int getNbrMFInferno() {
-        return num_mf_inferno;
+        return mfInfernoCount;
     }
 
     @Override
@@ -260,19 +260,19 @@ public final class Player extends TurnOrdered implements IPlayer {
 
     @Override
     public void setSeeAll(boolean see_all) {
-        see_entire_board = see_all;
+        entireBoardVisible = see_all;
     }
 
     // This simply returns the value, without checking the observer flag
     @Override
     public boolean getSeeAll() {
-        return see_entire_board;
+        return entireBoardVisible;
     }
 
     // If observer is false, see_entire_board does nothing
     @Override
     public boolean canSeeAll() {
-        return (observer && see_entire_board);
+        return (observer && entireBoardVisible);
     }
 
     @Override
@@ -391,13 +391,7 @@ public final class Player extends TurnOrdered implements IPlayer {
                     private final int ownerId = getId();
 
                     public boolean accept(Entity entity) {
-                        if (entity.getOwner() == null) {
-                            return false;
-                        }
-                        if (ownerId == entity.getOwner().getId()) {
-                            return true;
-                        }
-                        return false;
+                        return entity.getOwner() != null && ownerId == entity.getOwner().getId();
                     }
                 }); e.hasNext(); ) {
             Entity m = e.next();
@@ -499,16 +493,8 @@ public final class Player extends TurnOrdered implements IPlayer {
                     && (bonusHQ == 0) && (entity.getHQIniBonus() > 0)) {
                     bonusHQ = entity.getHQIniBonus();
                 }
-                
-				/*
-				 * REMOVED IN IO. 
-				 * if (game.getOptions().booleanOption(OptionsConstants.
-				 * RPG_MANEI_DOMINI) && (bonusMD == 0) &&
-				 * (entity.getMDIniBonus() > 0)) { bonusMD =
-				 * entity.getMDIniBonus(); }
-				 */
+
                 if (entity.getQuirkIniBonus() > bonusQ) {
-                    //TODO: I am assuming that the quirk initiative bonuses go to the highest,
                     //rather than being cumulative
                     //http://www.classicbattletech.com/forums/index.php/topic,52903.new.html#new
                     bonusQ = entity.getQuirkIniBonus();
@@ -568,7 +554,7 @@ public final class Player extends TurnOrdered implements IPlayer {
     public Vector<Integer> getAirborneVTOL() {
 
         //a vector of unit ids
-        Vector<Integer> units = new Vector<Integer>();
+        Vector<Integer> units = new Vector<>();
         for (Entity entity : game.getEntitiesVector()) {
             if (entity.getOwner().equals(this)) {
                 if (((entity instanceof VTOL)
