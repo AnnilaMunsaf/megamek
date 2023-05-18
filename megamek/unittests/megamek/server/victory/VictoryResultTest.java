@@ -97,15 +97,32 @@ public class VictoryResultTest {
         victoryResult.setVictory(true);
         doReturn(true).when(victoryResult).victory();
 
-
         // Verify the method call and the value set
         verify(victoryResult, times(1)).setVictory(true);
         Assert.assertTrue(victoryResult.victory());
     }
 
 
+    @Test
+    public void testGetPlayers() {
+        // Set up the player scores using the actual implementation
+        victoryResult.addPlayerScore(1, 3);
+        victoryResult.addPlayerScore(2, 3);
 
+        // Define the expected result
+        int[] expectedPlayers = {1, 2};
 
+        // Mock the getPlayers() method
+        when(victoryResult.getPlayers()).thenReturn(expectedPlayers);
+
+        // Call the method
+        int[] players = victoryResult.getPlayers();
+
+        // Verify the result
+        Assert.assertEquals(2, players.length);
+        Assert.assertEquals(1, players[0]);
+        Assert.assertEquals(2, players[1]);
+    }
 
 
 }
