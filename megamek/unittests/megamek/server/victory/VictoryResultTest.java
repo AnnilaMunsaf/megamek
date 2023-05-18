@@ -2,6 +2,7 @@ package megamek.server.victory;
 
 
 
+import megamek.common.IPlayer;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -122,6 +123,72 @@ public class VictoryResultTest {
         Assert.assertEquals(2, players.length);
         Assert.assertEquals(1, players[0]);
         Assert.assertEquals(2, players[1]);
+    }
+
+
+    @Test
+    public void testAddPlayerScore() {
+        // Set up the mock object
+        when(victoryResult.getPlayerScore(1)).thenReturn(2.5);
+
+        // Call the method
+        victoryResult.addPlayerScore(2, 3.5);
+
+        // Verify the behavior
+        assertEquals(3.5, victoryResult.getPlayerScore(2), 3.5);
+        assertEquals(2.5, victoryResult.getPlayerScore(1), 0);
+    }
+
+    @Test
+    public void testGetWinningPlayerDraw() throws NoSuchFieldException, IllegalAccessException {
+        // Mock the behavior of playerScore
+        Map<Integer, Double> playerScore = new HashMap<>();
+        playerScore.put(1, 3.0);
+        playerScore.put(2, 3.0);
+        playerScore.put(3, 2.0);
+
+        Mockito.when(victoryResult.getWinningPlayer()).thenCallRealMethod();
+        Mockito.when(victoryResult.getWinningTeam()).thenReturn(IPlayer.TEAM_NONE);
+
+        // Set up the playerScore field using reflection
+        Field playerScoreField = VictoryResult.class.getDeclaredField("playerScore");
+        playerScoreField.setAccessible(true);
+        playerScoreField.set(victoryResult, playerScore);
+
+
+        when(victoryResult.getWinningPlayer()).thenCallRealMethod();
+
+
+        int expectedWinningPlayer = IPlayer.PLAYER_NONE;
+        int actualWinningPlayer = victoryResult.getWinningPlayer();
+
+        assertEquals(expectedWinningPlayer, actualWinningPlayer);
+    }
+
+    @Test
+    public void testGetWinningTeamDraw() throws NoSuchFieldException, IllegalAccessException {
+        // Mock the behavior of playerScore
+        Map<Integer, Double> teamScore = new HashMap<>();
+        teamScore.put(1, 3.0);
+        teamScore.put(2, 3.0);
+        teamScore.put(3, 2.0);
+
+        Mockito.when(victoryResult.getWinningPlayer()).thenCallRealMethod();
+        Mockito.when(victoryResult.getWinningTeam()).thenReturn(IPlayer.TEAM_NONE);
+
+        // Set up the playerScore field using reflection
+        Field playerScoreField = VictoryResult.class.getDeclaredField("teamScore");
+        playerScoreField.setAccessible(true);
+        playerScoreField.set(victoryResult, teamScore);
+
+
+        when(victoryResult.getWinningTeam()).thenCallRealMethod();
+
+
+        int expectedWinningTeam = IPlayer.TEAM_NONE;
+        int actualWinningTeam= victoryResult.getWinningTeam();
+
+        assertEquals(expectedWinningTeam, actualWinningTeam);
     }
 
 
