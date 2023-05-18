@@ -800,7 +800,6 @@ public class Game implements Serializable, IGame {
                 resetCharges();
                 resetRams();
                 break;
-            // TODO Is there better solution to handle charges?
             case PHASE_PHYSICAL_REPORT:
             case PHASE_END:
                 resetCharges();
@@ -1489,16 +1488,6 @@ public class Game implements Serializable, IGame {
         }
     }
 
-//    private void removeMinefields() {
-//        minefields.clear();
-//        vibrabombs.removeAllElements();
-//
-//        Enumeration<IPlayer> iter = getPlayers();
-//        while (iter.hasMoreElements()) {
-//            IPlayer player = iter.nextElement();
-//            player.removeMinefields();
-//        }
-//    }
 
     /**
      * Regenerates the entities by id hashtable by going thru all entities in
