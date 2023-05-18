@@ -69,7 +69,7 @@ public class Game implements Serializable, IGame {
     /**
      * A UUID to identify this game instance.
      */
-    public static UUID uuid = UUID.randomUUID();
+    public UUID uuid = UUID.randomUUID();
 
     /**
      * Stores the version of MM, so that it can be serialized in saved games.
@@ -132,8 +132,8 @@ public class Game implements Serializable, IGame {
     private Phase lastPhase = Phase.PHASE_UNKNOWN;
 
     // phase state
-    private Vector<EntityAction> actions = new Vector<EntityAction>();
-    private Vector<AttackAction> pendingCharges = new Vector<AttackAction>();
+    private transient Vector<EntityAction> actions = new Vector<EntityAction>();
+    private transient Vector<AttackAction> pendingCharges = new Vector<AttackAction>();
     private Vector<AttackAction> pendingRams = new Vector<AttackAction>();
     private Vector<AttackAction> pendingTeleMissileAttacks = new Vector<AttackAction>();
     private Vector<PilotingRollData> pilotRolls = new Vector<PilotingRollData>();
