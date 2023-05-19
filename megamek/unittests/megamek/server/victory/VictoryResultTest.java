@@ -14,7 +14,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 
@@ -88,7 +88,7 @@ public class VictoryResultTest {
         boolean result = victoryResult.victory();
 
         // Verify the result
-        Assert.assertTrue(result);
+        assertTrue(result);
         verify(victoryResult, times(1)).victory();
     }
 
@@ -100,7 +100,7 @@ public class VictoryResultTest {
 
         // Verify the method call and the value set
         verify(victoryResult, times(1)).setVictory(true);
-        Assert.assertTrue(victoryResult.victory());
+        assertTrue(victoryResult.victory());
     }
 
 
@@ -189,6 +189,26 @@ public class VictoryResultTest {
         int actualWinningTeam= victoryResult.getWinningTeam();
 
         assertEquals(expectedWinningTeam, actualWinningTeam);
+    }
+
+
+    @Test
+    public void testIsDraw() {
+        VictoryResult victoryResult = Mockito.spy(new VictoryResult(false));
+
+        Mockito.when(victoryResult.getWinningPlayer()).thenReturn(IPlayer.PLAYER_NONE);
+        Mockito.when(victoryResult.getWinningTeam()).thenReturn(IPlayer.TEAM_NONE);
+
+        Assert.assertTrue(victoryResult.isDraw());
+
+        // Test when the winning player is not PLAYER_NONE
+        Mockito.when(victoryResult.getWinningPlayer()).thenReturn(1);
+        assertFalse(victoryResult.isDraw());
+
+        // Test when the winning team is not TEAM_NONE
+        Mockito.when(victoryResult.getWinningPlayer()).thenReturn(IPlayer.PLAYER_NONE);
+        Mockito.when(victoryResult.getWinningTeam()).thenReturn(1);
+        assertFalse(victoryResult.isDraw());
     }
 
 
