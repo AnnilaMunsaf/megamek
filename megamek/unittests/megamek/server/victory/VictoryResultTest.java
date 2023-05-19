@@ -21,13 +21,11 @@ import static org.mockito.Mockito.*;
 @RunWith(JUnit4.class)
 public class VictoryResultTest {
 
-    private boolean victory;
     VictoryResult victoryResult;
 
     @Before
     public void setUp() {
         victoryResult = Mockito.mock(VictoryResult.class);
-        victory = false;
     }
 
     @Test
