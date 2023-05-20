@@ -284,7 +284,7 @@ public class VictoryResultTest {
 
         // Create a mock report
         Report mockReport = mock(Report.class); // Replace with your mock or test implementation of Report
-// Create a mock report
+        // Create a mock report
         Report mockReport2 = mock(Report.class); // Replace with your mock or test implementation of Report
 
         // Add the mock report using the addReport method
