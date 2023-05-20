@@ -215,6 +215,8 @@ public class Server implements Runnable {
 
     private String fileType = ".sav.gz";
 
+    private String destroyEntityReasonText = "Structural Integrity Collapse";
+
 
     // server setup
     private String password;
@@ -7049,7 +7051,7 @@ public class Server implements Runnable {
                                         addReport(ejectEntity(entity, true, false));
                                     }
                                 }
-                                addReport(destroyEntity(entity, "Structural Integrity Collapse",
+                                addReport(destroyEntity(entity, destroyEntityReasonText,
                                         false));
                             }
                         }
@@ -10896,7 +10898,7 @@ public class Server implements Runnable {
                                                 && ftr.isCondEjectSIDest()))) {
                                 vPhaseReport.addAll(ejectEntity(te, true, false));
                             }
-                            vPhaseReport.addAll(destroyEntity(te,"Structural Integrity Collapse"));
+                            vPhaseReport.addAll(destroyEntity(te,destroyEntityReasonText));
                             ftr.setSI(0);
                             if (null != ae) {
                                 creditKill(te, ae);
@@ -22332,7 +22334,7 @@ public class Server implements Runnable {
                             addReport(ejectEntity(te, true, false));
                         }
                     }
-                    vDesc.addAll(destroyEntity(te, "Structural Integrity Collapse"));
+                    vDesc.addAll(destroyEntity(te, destroyEntityReasonText));
                     a.doDisbandDamage();
                     a.setCapArmor(0);
                     if (hit.getAttackerId() != Entity.NONE) {
@@ -22993,7 +22995,7 @@ public class Server implements Runnable {
                                             && a.isCondEjectSIDest()))) {
                             vDesc.addAll(ejectEntity(te, true, false));
                         } else {
-                            vDesc.addAll(destroyEntity(te,"Structural Integrity Collapse"));
+                            vDesc.addAll(destroyEntity(te,destroyEntityReasonText));
                         }
                         a.setSI(0);
                         if (hit.getAttackerId() != Entity.NONE) {
@@ -26964,7 +26966,7 @@ public class Server implements Runnable {
                 vDesc.addElement(r);
                 if (a.getSI() <= 0) {
                     //No auto-ejection chance here. Nuke would vaporize the pilot.
-                    vDesc.addAll(destroyEntity(a, "Structural Integrity Collapse"));
+                    vDesc.addAll(destroyEntity(a, destroyEntityReasonText));
                     a.setSI(0);
                     if (hit.getAttackerId() != Entity.NONE) {
                         creditKill(a, game.getEntity(hit.getAttackerId()));
