@@ -3,6 +3,7 @@ package megamek.server.victory;
 
 
 import megamek.common.IPlayer;
+import megamek.common.Report;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -121,6 +123,27 @@ public class VictoryResultTest {
         Assert.assertEquals(2, players.length);
         Assert.assertEquals(1, players[0]);
         Assert.assertEquals(2, players[1]);
+    }
+
+    @Test
+    public void testGetTeams() {
+        // Set up the player scores using the actual implementation
+        victoryResult.addTeamScore(1, 3);
+        victoryResult.addTeamScore(2, 3);
+
+        // Define the expected result
+        int[] expectedTeam = {1, 2};
+
+        // Mock the getPlayers() method
+        when(victoryResult.getTeams()).thenReturn(expectedTeam);
+
+        // Call the method
+        int[] teams = victoryResult.getTeams();
+
+        // Verify the result
+        Assert.assertEquals(2, teams.length);
+        Assert.assertEquals(1, teams[0]);
+        Assert.assertEquals(2, teams[1]);
     }
 
 
@@ -252,6 +275,32 @@ public class VictoryResultTest {
 
         // Team 2 has a score of 9.75, which does not match the hiScore
         Assert.assertFalse(victoryResult.isWinningPlayer(2));
+    }
+
+    @Test
+    public void testAddReportAndGetReports(){
+        // Create an instance of the class under test
+        VictoryResult victoryResult = Mockito.spy(new VictoryResult(true));
+
+        // Create a mock report
+        Report mockReport = mock(Report.class); // Replace with your mock or test implementation of Report
+// Create a mock report
+        Report mockReport2 = mock(Report.class); // Replace with your mock or test implementation of Report
+
+        // Add the mock report using the addReport method
+        victoryResult.addReport(mockReport);
+        victoryResult.addReport(mockReport2);
+
+        // Verify that the addReport method was called once
+        verify(victoryResult, times(1)).addReport(mockReport);
+
+        // Get the reports using the getReports method
+        ArrayList<Report> reports = victoryResult.getReports();
+
+        // Assert that the reports contain the mock report
+        assertEquals(2, reports.size());
+        assertEquals(mockReport, reports.get(0));
+
     }
 
 
