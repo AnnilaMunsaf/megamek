@@ -2278,7 +2278,6 @@ public class Server implements Runnable {
                     incrementAndSendGameRound();
                 }
 
-                // setIneligible(phase);
                 determineTurnOrder(phase);
                 writeInitiativeReport(false);
 
@@ -2816,8 +2815,6 @@ public class Server implements Runnable {
                 // here.
                 // (Taharqa)
                 game.setupRoundDeployment();
-                // boolean doDeploy = game.shouldDeployThisRound() &&
-                // (game.getLastPhase() != IGame.Phase.PHASE_DEPLOYMENT);
                 if (game.shouldDeployThisRound()) {
                     changePhase(IGame.Phase.PHASE_DEPLOYMENT);
                 } else {
