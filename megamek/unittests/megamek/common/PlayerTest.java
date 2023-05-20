@@ -173,7 +173,7 @@ public class PlayerTest {
         Mockito.when(game.getOptions()).thenReturn(options);
 
         // Set the mock booleanOption value
-        Mockito.when(options.booleanOption(Mockito.eq(OptionsConstants.ADVANCED_TACOPS_MOBILE_HQS))).thenReturn(true);
+        Mockito.when(options.booleanOption(OptionsConstants.ADVANCED_TACOPS_MOBILE_HQS)).thenReturn(true);
 
 
         int expectedBonus = 15; // The highest quirkIniBonus among the owned entities
