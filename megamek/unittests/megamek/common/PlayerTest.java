@@ -27,6 +27,9 @@ import org.mockito.Mockito;
 
 import java.util.Vector;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 
 @RunWith(JUnit4.class)
 public class PlayerTest {
@@ -48,7 +51,9 @@ public class PlayerTest {
     public void testAddMinefield() {
         player.setGame(game);
         player.addMinefield(minefield);
-        assert (player.getMinefields().contains(minefield));
+
+        // Assert that the minefield is added to the player's minefields
+        assertTrue(player.getMinefields().contains(minefield));
     }
 
 
@@ -56,7 +61,9 @@ public class PlayerTest {
     public void testRemoveMinefield() {
         player.addMinefield(minefield);
         player.removeMinefield(minefield);
-        assert (!player.getMinefields().contains(minefield));
+
+        // Assert that the minefield is removed from the player's minefields
+        assertFalse(player.getMinefields().contains(minefield));
     }
 
 
@@ -65,14 +72,14 @@ public class PlayerTest {
         player.addArtyAutoHitHex(new Coords(1, 2));
         player.addArtyAutoHitHex(new Coords(3, 4));
         player.removeArtyAutoHitHexes();
-        Assert.assertTrue(player.getArtyAutoHitHexes().isEmpty());
+        assertTrue(player.getArtyAutoHitHexes().isEmpty());
     }
 
 
     @Test
     public void testAddArtyAutoHitHex() {
         player.addArtyAutoHitHex(new Coords(1, 2));
-        Assert.assertFalse(player.getArtyAutoHitHexes().isEmpty());
+        assertFalse(player.getArtyAutoHitHexes().isEmpty());
         Assert.assertEquals(1, player.getArtyAutoHitHexes().size());
         Assert.assertEquals(new Coords(1, 2), player.getArtyAutoHitHexes().get(0));
     }
@@ -85,16 +92,16 @@ public class PlayerTest {
         Player player3 = new Player(3, "John3"); // id=3, team=1
         Player player4 = new Player(4, "John4"); // id=4, team=3
 
-        Assert.assertTrue(player1.isEnemyOf(null)); // Null player, not enemy
+        assertTrue(player1.isEnemyOf(null)); // Null player, not enemy
 
 
         player1.setTeam(4);
         player3.setTeam(4);
 
-        Assert.assertFalse(player1.isEnemyOf(player1)); // Same player, not enemy
-        Assert.assertTrue(player1.isEnemyOf(player2)); // Different team, enemy
-        Assert.assertFalse(player1.isEnemyOf(player3)); // Same team, not enemy
-        Assert.assertTrue(player1.isEnemyOf(player4)); // Unassigned team, enemy
+        assertFalse(player1.isEnemyOf(player1)); // Same player, not enemy
+        assertTrue(player1.isEnemyOf(player2)); // Different team, enemy
+        assertFalse(player1.isEnemyOf(player3)); // Same team, not enemy
+        assertTrue(player1.isEnemyOf(player4)); // Unassigned team, enemy
     }
 
 
@@ -110,11 +117,11 @@ public class PlayerTest {
 
     @Test
     public void testSetAdmitsDefeat() {
-        Assert.assertFalse(player.admitsDefeat());
+        assertFalse(player.admitsDefeat());
         player.setAdmitsDefeat(true);
-        Assert.assertTrue(player.admitsDefeat());
+        assertTrue(player.admitsDefeat());
         player.setAdmitsDefeat(false);
-        Assert.assertFalse(player.admitsDefeat());
+        assertFalse(player.admitsDefeat());
     }
 
     @Test
@@ -122,12 +129,12 @@ public class PlayerTest {
         Player player1 = new Player(1, "John1"); // id=1, team=1
         Player player2 = new Player(2, "John2"); // id=2, team=2
 
-        Assert.assertFalse(player1.admitsDefeat()); // Initial value should be false
-        Assert.assertFalse(player2.admitsDefeat()); // Initial value should be false
+        assertFalse(player1.admitsDefeat()); // Initial value should be false
+        assertFalse(player2.admitsDefeat()); // Initial value should be false
 
         player1.setAdmitsDefeat(true);
-        Assert.assertTrue(player1.admitsDefeat()); // Value should be true
-        Assert.assertFalse(player2.admitsDefeat()); // Value of other player should still be false
+        assertTrue(player1.admitsDefeat()); // Value should be true
+        assertFalse(player2.admitsDefeat()); // Value of other player should still be false
     }
 
     @Test
@@ -370,14 +377,14 @@ public class PlayerTest {
     public void testAllowTeamChange() {
 
         // Test initial state
-        Assert.assertFalse(player.isAllowingTeamChange());
+        assertFalse(player.isAllowingTeamChange());
 
         // Test setting and getting team change permission
         player.setAllowTeamChange(true);
-        Assert.assertTrue(player.isAllowingTeamChange());
+        assertTrue(player.isAllowingTeamChange());
 
         player.setAllowTeamChange(false);
-        Assert.assertFalse(player.isAllowingTeamChange());
+        assertFalse(player.isAllowingTeamChange());
     }
 
     @Test
