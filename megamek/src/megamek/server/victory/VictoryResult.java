@@ -97,7 +97,7 @@ public class VictoryResult implements IResult {
         return draw ? IPlayer.TEAM_NONE : maxTeam;
     }
 
-    public void updateEloRatings(Enumeration<IPlayer> players) {
+    public void updateEloRatings(Vector<IPlayer> players) {
         PlayerEloRating.updateRatings(this, players);
     }
 

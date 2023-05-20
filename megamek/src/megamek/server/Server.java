@@ -3331,7 +3331,7 @@ public class Server implements Runnable {
                 game.setVictoryTeam(wonTeam);
             }
             // update the rating of players
-            vr.updateEloRatings(game.getPlayers());
+            vr.updateEloRatings(game.getPlayersVector());
         } else {
             game.setVictoryPlayerId(IPlayer.PLAYER_NONE);
             game.setVictoryTeam(IPlayer.TEAM_NONE);

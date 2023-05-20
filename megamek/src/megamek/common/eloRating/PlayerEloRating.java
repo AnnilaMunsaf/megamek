@@ -4,11 +4,12 @@ import megamek.common.IPlayer;
 import megamek.server.victory.VictoryResult;
 
 import java.util.Enumeration;
+import java.util.Vector;
 
 public class PlayerEloRating {
     private static final int K_FACTOR = 32; // K-factor determines the magnitude of rating changes
 
-    public static void updateRatings(VictoryResult victoryResult, Enumeration<IPlayer> players) {
+    public static void updateRatings(VictoryResult victoryResult, Vector<IPlayer> players) {
         int winningPlayerId = victoryResult.getWinningPlayer();
         int winningTeamId = victoryResult.getWinningTeam();
 
@@ -30,19 +31,19 @@ public class PlayerEloRating {
         }
     }
 
-    private static IPlayer findPlayerById(int playerId, Enumeration<IPlayer> players) {
-        while (players.hasMoreElements()) {
-            if (players.nextElement().getId() == playerId) {
-                return players.nextElement();
+    private static IPlayer findPlayerById(int playerId, Vector<IPlayer> players) {
+        for (IPlayer player : players) {
+            if (player.getId() == playerId) {
+                return player;
             }
         }
         return null;
     }
 
-    private static IPlayer findLosingPlayer(int winningPlayerId, int winningTeamId, Enumeration<IPlayer> players) {
-        while (players.hasMoreElements()) {
-            if (players.nextElement().getId() != winningPlayerId && players.nextElement().getTeam() != winningTeamId) {
-                return players.nextElement();
+    private static IPlayer findLosingPlayer(int winningPlayerId, int winningTeamId, Vector<IPlayer> players) {
+        for (IPlayer player : players) {
+            if (player.getId() != winningPlayerId && player.getTeam() != winningTeamId) {
+                return player;
             }
         }
         return null;
