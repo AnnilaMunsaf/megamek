@@ -333,7 +333,7 @@ public final class Player extends TurnOrdered implements IPlayer {
 
     @Override
     public void setPlayerEloRating(int pEloRating) {
-             playerEloRating = pEloRating;
+             this.playerEloRating = pEloRating;
     }
 
     @Override

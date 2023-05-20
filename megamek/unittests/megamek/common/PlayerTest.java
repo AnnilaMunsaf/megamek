@@ -27,8 +27,7 @@ import org.mockito.Mockito;
 
 import java.util.Vector;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 
 @RunWith(JUnit4.class)
@@ -56,6 +55,12 @@ public class PlayerTest {
         assertTrue(player.getMinefields().contains(minefield));
     }
 
+
+    @Test
+    public void testPlayerEloRating() {
+        player.setPlayerEloRating(200);
+        assertEquals(200, player.getPlayerEloRating());
+    }
 
     @Test
     public void testRemoveMinefield() {
