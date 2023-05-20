@@ -123,6 +123,10 @@ public interface IPlayer extends ITurnOrdered {
      */
     void adjustStartingPosForReinforcements();
 
+    public int getPlayerEloRating();
+
+    public void setPlayerEloRating(int pEloRating);
+
     boolean isEnemyOf(IPlayer other);
 
     void setAdmitsDefeat(boolean admitsDefeat);

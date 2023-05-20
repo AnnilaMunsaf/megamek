@@ -31,6 +31,8 @@ public final class Player extends TurnOrdered implements IPlayer {
 
     private transient IGame game;
 
+    private int playerEloRating;
+
     private String name;
     private int id;
 
@@ -76,6 +78,10 @@ public final class Player extends TurnOrdered implements IPlayer {
      * player's request to chang teams.
      */
     private boolean allowingTeamChange = false;
+
+    public Player() {
+        this.playerEloRating = 1000; // Initial Elo rating
+    }
 
     @Override
     public Vector<Minefield> getMinefields() {
@@ -318,6 +324,16 @@ public final class Player extends TurnOrdered implements IPlayer {
         if (startingPos == Board.START_CENTER) {
             startingPos = Board.START_ANY; // center changes to any
         }
+    }
+
+    @Override
+    public int getPlayerEloRating() {
+        return playerEloRating;
+    }
+
+    @Override
+    public void setPlayerEloRating(int pEloRating) {
+             playerEloRating = pEloRating;
     }
 
     @Override
