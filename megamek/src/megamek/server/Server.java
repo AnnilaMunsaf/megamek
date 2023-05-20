@@ -1923,17 +1923,10 @@ public class Server implements Runnable {
      */
     public void forceVictory(IPlayer victor) {
         game.setForceVictory(true);
-        if (victor.getTeam() == IPlayer.TEAM_NONE) {
-            game.setVictoryPlayerId(victor.getId());
-            game.setVictoryTeam(IPlayer.TEAM_NONE);
-        } else {
-            game.setVictoryPlayerId(IPlayer.PLAYER_NONE);
-            game.setVictoryTeam(victor.getTeam());
-        }
+        game.setVictoryPlayerId(victor.getId());
+        game.setVictoryTeam(victor.getTeam());
 
-        Vector<IPlayer> playersVector = game.getPlayersVector();
-        for (int i = 0; i < playersVector.size(); i++) {
-            IPlayer player = playersVector.elementAt(i);
+        for (IPlayer player : game.getPlayersVector()) {
             player.setAdmitsDefeat(false);
         }
     }
