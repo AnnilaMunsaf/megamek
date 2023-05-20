@@ -208,9 +208,7 @@ public class Server implements Runnable {
         NONE, FRAGMENTATION, FLECHETTE, ACID, INCENDIARY, IGNORE_PASSENGER, ANTI_TSM, ANTI_INFANTRY, NAIL_RIVET,
         NONPENETRATING
     }
-
-    // public static final String LEGAL_CHARS =
-    // "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-";
+    
     private static final String DEFAULT_BOARD = MapSettings.BOARD_SURPRISE;
 
     // server setup
