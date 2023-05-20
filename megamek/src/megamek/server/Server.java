@@ -211,7 +211,10 @@ public class Server implements Runnable {
 
     private static final String DEFAULT_BOARD = MapSettings.BOARD_SURPRISE;
 
-    String playerText = "Player ";
+    private String playerText = "Player ";
+
+    private String fileType = ".sav.gz";
+
 
     // server setup
     private String password;
@@ -1207,11 +1210,11 @@ public class Server implements Runnable {
     public void sendSaveGame(int connId, String sFile, String sLocalPath) {
         saveGame(sFile, false);
         String sFinalFile = sFile;
-        if (!sFinalFile.endsWith(".sav.gz")) {
+        if (!sFinalFile.endsWith(fileType)) {
             if (sFinalFile.endsWith(".sav")) {
                 sFinalFile = sFile + ".gz";
             } else {
-                sFinalFile = sFile + ".sav.gz";
+                sFinalFile = sFile + fileType;
             }
         }
         sLocalPath = sLocalPath.replaceAll("\\|", " ");
@@ -1292,7 +1295,7 @@ public class Server implements Runnable {
      */
     public void sendLoadGame(int connId, String sFile) {
         String sFinalFile = sFile;
-        if (!sFinalFile.endsWith(".sav") && !sFinalFile.endsWith(".sav.gz")) {
+        if (!sFinalFile.endsWith(".sav") && !sFinalFile.endsWith(fileType)) {
             sFinalFile = sFile + ".sav";
         }
         if (!sFinalFile.endsWith(".gz")) {
