@@ -105,7 +105,7 @@ public class PlayerTest {
         Assert.assertNotEquals(null, player);
         Player other_player = new Player(player.getId(), "John5");
         Assert.assertEquals(other_player, player);
-        Assert.assertFalse(player.equals(player2));
+        Assert.assertNotEquals(player2, player);
     }
 
     @Test
