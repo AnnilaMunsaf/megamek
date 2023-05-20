@@ -259,8 +259,8 @@ public final class Player extends TurnOrdered implements IPlayer {
     }
 
     @Override
-    public void setSeeAll(boolean see_all) {
-        entireBoardVisible = see_all;
+    public void setSeeAll(boolean seeAll) {
+        entireBoardVisible = seeAll;
     }
 
     // This simply returns the value, without checking the observer flag
