@@ -3014,6 +3014,7 @@ public class Server implements Runnable {
                 break;
             case PHASE_VICTORY:
                 GameVictoryEvent gve = new GameVictoryEvent(this, game);
+                VictoryResult vr = game.getVictory().checkForVictory(game, game.getVictoryContext());
                 game.processGameEvent(gve);
                 transmitGameVictoryEventToAll();
                 resetGame();
@@ -3329,6 +3330,8 @@ public class Server implements Runnable {
                 game.setVictoryPlayerId(wonPlayer);
                 game.setVictoryTeam(wonTeam);
             }
+            // update the rating of players
+            vr.updateEloRatings(game.getPlayers());
         } else {
             game.setVictoryPlayerId(IPlayer.PLAYER_NONE);
             game.setVictoryTeam(IPlayer.TEAM_NONE);

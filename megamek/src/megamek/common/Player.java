@@ -79,9 +79,8 @@ public final class Player extends TurnOrdered implements IPlayer {
      */
     private boolean allowingTeamChange = false;
 
-    public Player() {
-        this.playerEloRating = 1000; // Initial Elo rating
-    }
+    private static final int INITIAL_RATING = 1000; // Initial rating value for players
+
 
     @Override
     public Vector<Minefield> getMinefields() {
@@ -203,6 +202,7 @@ public final class Player extends TurnOrdered implements IPlayer {
     public Player(int id, String name) {
         this.name = name;
         this.id = id;
+        this.playerEloRating = INITIAL_RATING; // Initialize Elo rating with the initial value
     }
 
     @Override

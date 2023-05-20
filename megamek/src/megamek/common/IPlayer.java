@@ -123,9 +123,9 @@ public interface IPlayer extends ITurnOrdered {
      */
     void adjustStartingPosForReinforcements();
 
-    public int getPlayerEloRating();
+    int getPlayerEloRating();
 
-    public void setPlayerEloRating(int pEloRating);
+    void setPlayerEloRating(int pEloRating);
 
     boolean isEnemyOf(IPlayer other);
 

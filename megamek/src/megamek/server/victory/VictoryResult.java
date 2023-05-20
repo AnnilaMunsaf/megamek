@@ -15,12 +15,12 @@ package megamek.server.victory;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import megamek.common.IPlayer;
+import megamek.common.Player;
 import megamek.common.Report;
+import megamek.common.eloRating.PlayerEloRating;
 
 /**
  * quick implementation of a Victory.Result stores player scores and a flag if
@@ -95,6 +95,10 @@ public class VictoryResult implements IResult {
         }
 
         return draw ? IPlayer.TEAM_NONE : maxTeam;
+    }
+
+    public void updateEloRatings(Enumeration<IPlayer> players) {
+        PlayerEloRating.updateRatings(this, players);
     }
 
     protected void updateHiScore() {
