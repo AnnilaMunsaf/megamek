@@ -211,8 +211,11 @@ public class Server implements Runnable {
 
     private static final String DEFAULT_BOARD = MapSettings.BOARD_SURPRISE;
 
+    String playerText = "Player ";
+
     // server setup
     private String password;
+
 
     private final String metaServerUrl;
 
@@ -741,7 +744,7 @@ public class Server implements Runnable {
             gamePlayer.setNbrMFInferno(player.getNbrMFInferno());
             if (gamePlayer.getConstantInitBonus()
                 != player.getConstantInitBonus()) {
-                sendServerChat("Player " + gamePlayer.getName()
+                sendServerChat(player + gamePlayer.getName()
                                + " changed their initiative bonus from "
                                + gamePlayer.getConstantInitBonus()
                                + " to " + player.getConstantInitBonus() + ".");
@@ -29913,7 +29916,7 @@ public class Server implements Runnable {
                         entity.setDesignValid(false);
                     } else {
                         IPlayer cheater = game.getPlayer(connIndex);
-                        sendServerChat("Player " + cheater.getName()
+                        sendServerChat(playerText + cheater.getName()
                                        + " attempted to add an illegal unit design ("
                                        + entity.getShortNameRaw()
                                        + "), the unit was rejected.");
@@ -30331,7 +30334,7 @@ public class Server implements Runnable {
         IGame.Phase phase = (IGame.Phase)c.getObject(1);
         Entity e = game.getEntity(entityId);
         if (connIndex != e.getOwnerId()) {
-            MegaMek.getLogger().error("Player " + connIndex 
+            MegaMek.getLogger().error(playerText + connIndex
                     + " tried to activate a hidden unit owned by Player " + e.getOwnerId());
             return;
         }
@@ -30448,7 +30451,7 @@ public class Server implements Runnable {
         }
         IPlayer player = getPlayer(connIndex);
         if ((null != player) && (e.getOwner() != player)) {
-            MegaMek.getLogger().error("Player " + player.getName() + " does not own the entity " + e.getDisplayName());
+            MegaMek.getLogger().error(playerText + player.getName() + " does not own the entity " + e.getDisplayName());
             return;
         }
 
@@ -30634,7 +30637,7 @@ public class Server implements Runnable {
                 continue;
             }
 
-            String message = "Player " + player.getName() + " changed option \"" +
+            String message = playerText + player.getName() + " changed option \"" +
                     originalOption.getDisplayableName() + "\" to " + option.getValue().toString() + '.';
             sendServerChat(message);
             originalOption.setValue(option.getValue());
@@ -31447,7 +31450,7 @@ public class Server implements Runnable {
                 if (game.getPhase().isBefore(Phase.PHASE_DEPLOYMENT)) {
                     MapSettings newSettings = (MapSettings) packet.getObject(0);
                     if (!mapSettings.equalMapGenParameters(newSettings)) {
-                        sendServerChat("Player " + player.getName() + " changed map settings");
+                        sendServerChat(playerText + player.getName() + " changed map settings");
                     }
                     mapSettings = newSettings;
                     mapSettings.setBoardsAvailableVector(scanForBoards(new BoardDimensions(
@@ -31469,7 +31472,7 @@ public class Server implements Runnable {
                 if (game.getPhase().isBefore(Phase.PHASE_DEPLOYMENT)) {
                     MapSettings newSettings = (MapSettings) packet.getObject(0);
                     if (!mapSettings.equalMapGenParameters(newSettings)) {
-                        sendServerChat("Player " + player.getName() + " changed map dimensions");
+                        sendServerChat(playerText + player.getName() + " changed map dimensions");
                     }
                     mapSettings = newSettings;
                     mapSettings.setBoardsAvailableVector(scanForBoards(new BoardDimensions(
@@ -31491,7 +31494,7 @@ public class Server implements Runnable {
                 // MapSettings newSettings = (MapSettings) packet.getObject(0);
                 if (game.getPhase().isBefore(Phase.PHASE_DEPLOYMENT)) {
                     PlanetaryConditions conditions = (PlanetaryConditions) packet.getObject(0);
-                    sendServerChat("Player " + player.getName() + " changed planetary conditions");
+                    sendServerChat(playerText + player.getName() + " changed planetary conditions");
                     game.setPlanetaryConditions(conditions);
                     resetPlayersDone();
                     transmitAllPlayerDones();
