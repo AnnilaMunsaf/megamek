@@ -208,7 +208,7 @@ public class Server implements Runnable {
         NONE, FRAGMENTATION, FLECHETTE, ACID, INCENDIARY, IGNORE_PASSENGER, ANTI_TSM, ANTI_INFANTRY, NAIL_RIVET,
         NONPENETRATING
     }
-    
+
     private static final String DEFAULT_BOARD = MapSettings.BOARD_SURPRISE;
 
     // server setup
@@ -3594,7 +3594,7 @@ public class Server implements Runnable {
                         });
                 HashSet<Integer> points = new HashSet<>();
                 int numPlayerProtos = 0;
-                for (; playerProtos.hasNext(); ) {
+                while (playerProtos.hasNext()) {
                     Entity proto = playerProtos.next();
                     numPlayerProtos++;
                     points.add((int) proto.getUnitNumber());
