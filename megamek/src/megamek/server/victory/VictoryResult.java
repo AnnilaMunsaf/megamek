@@ -101,13 +101,18 @@ public class VictoryResult implements IResult {
     protected void updateHiScore() {
         // used to calculate winner
         hiScore = Double.MIN_VALUE;
-        for (Double d : playerScore.values()) {
-            if (d > hiScore)
-                hiScore = d;
+        for (Map.Entry<Integer, Double> entry : playerScore.entrySet()) {
+            double score = entry.getValue();
+            if (score > hiScore) {
+                hiScore = score;
+            }
         }
-        for (Double d : teamScore.values()) {
-            if (d > hiScore)
-                hiScore = d;
+
+        for (Map.Entry<Integer, Double> entry : teamScore.entrySet()) {
+            double score = entry.getValue();
+            if (score > hiScore) {
+                hiScore = score;
+            }
         }
     }
 
