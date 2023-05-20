@@ -175,9 +175,9 @@ public class VictoryResultTest {
         Mockito.when(victoryResult.getWinningTeam()).thenReturn(IPlayer.TEAM_NONE);
 
         // Set up the playerScore field using reflection
-        Field playerScoreField = VictoryResult.class.getDeclaredField("teamScore");
-        playerScoreField.setAccessible(true);
-        playerScoreField.set(victoryResult, teamScore);
+        Field teamScoreField = VictoryResult.class.getDeclaredField("teamScore");
+        teamScoreField.setAccessible(true);
+        teamScoreField.set(victoryResult, teamScore);
 
 
         when(victoryResult.getWinningTeam()).thenCallRealMethod();
@@ -207,6 +207,51 @@ public class VictoryResultTest {
         Mockito.when(victoryResult.getWinningPlayer()).thenReturn(IPlayer.PLAYER_NONE);
         Mockito.when(victoryResult.getWinningTeam()).thenReturn(1);
         assertFalse(victoryResult.isDraw());
+    }
+
+    @Test
+    public void testIsWinningTeam() throws NoSuchFieldException, IllegalAccessException {
+        VictoryResult victoryResult = Mockito.spy(new VictoryResult(true));
+        victoryResult.addTeamScore(1, 10.25);
+        victoryResult.addTeamScore(2, 9.75);
+
+        Field hiScore = VictoryResult.class.getDeclaredField("hiScore");
+        hiScore.setAccessible(true);
+        hiScore.set(victoryResult, 10.25);
+
+        Mockito.doCallRealMethod().when(victoryResult).getTeamScore(1);
+
+        // Assuming the hiScore is 10.25
+        // Team 1 has a score of 10.25, which matches the hiScore
+        Assert.assertTrue(victoryResult.isWinningTeam(1));
+
+        Mockito.doCallRealMethod().when(victoryResult).getTeamScore(2);
+
+        // Team 2 has a score of 9.75, which does not match the hiScore
+        Assert.assertFalse(victoryResult.isWinningTeam(2));
+    }
+
+
+    @Test
+    public void testIsWinningPlayer() throws NoSuchFieldException, IllegalAccessException {
+        VictoryResult victoryResult = Mockito.spy(new VictoryResult(true));
+        victoryResult.addPlayerScore(1, 10.25);
+        victoryResult.addPlayerScore(2, 9.75);
+
+        Field hiScore = VictoryResult.class.getDeclaredField("hiScore");
+        hiScore.setAccessible(true);
+        hiScore.set(victoryResult, 10.25);
+
+        Mockito.doCallRealMethod().when(victoryResult).getPlayerScore(1);
+
+        // Assuming the hiScore is 10.25
+        // Team 1 has a score of 10.25, which matches the hiScore
+        Assert.assertTrue(victoryResult.isWinningPlayer(1));
+
+        Mockito.doCallRealMethod().when(victoryResult).getPlayerScore(2);
+
+        // Team 2 has a score of 9.75, which does not match the hiScore
+        Assert.assertFalse(victoryResult.isWinningPlayer(2));
     }
 
 
