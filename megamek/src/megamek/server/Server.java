@@ -3014,7 +3014,6 @@ public class Server implements Runnable {
                 break;
             case PHASE_VICTORY:
                 GameVictoryEvent gve = new GameVictoryEvent(this, game);
-                VictoryResult vr = game.getVictory().checkForVictory(game, game.getVictoryContext());
                 game.processGameEvent(gve);
                 transmitGameVictoryEventToAll();
                 resetGame();
@@ -3833,7 +3832,7 @@ public class Server implements Runnable {
         // send turns to all players
         send(createTurnVectorPacket());
     }
-    
+
     /**
      * Write the initiative results to the report
      */
