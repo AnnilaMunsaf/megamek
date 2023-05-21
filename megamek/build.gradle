@@ -42,7 +42,8 @@ dependencies {
 
     jarbundler 'com.ultramixer.jarbundler:jarbundler-core:3.3.0'
 
-    testImplementation 'junit:junit:4.12' 
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.8.2")
+    testImplementation 'junit:junit:4.13.1'
     testImplementation 'org.mockito:mockito-core:2.20.1'
 }
 
