@@ -2829,60 +2829,40 @@ public class Game implements Serializable, IGame {
      * accepts. This value will not be <code>null</code> but it may be
      * empty.
      */
-    public Enumeration<Entity> getSelectedOutOfGameEntities(
-            EntitySelector selector) {
-        Enumeration<Entity> retVal;
+    public Enumeration<Entity> getSelectedOutOfGameEntities(EntitySelector selector) {
+        if (selector == null) {
+            return vOutOfGame.elements();
+        } else {
+            final EntitySelector entitySelector = selector;
+            Enumeration<Entity> iter = vOutOfGame.elements();
 
-        // If no selector was supplied, return all entities.
-        if (null == selector) {
-            retVal = vOutOfGame.elements();
-        }
-
-        // Otherwise, return an anonymous Enumeration
-        // that selects entities in this game.
-        else {
-            final EntitySelector entry = selector;
-            retVal = new Enumeration<Entity>() {
-                private EntitySelector entitySelector = entry;
+            Enumeration<Entity> filteredIter = new Enumeration<Entity>() {
                 private Entity current = null;
-                private Enumeration<Entity> iter = vOutOfGame.elements();
 
-                // Do any more entities meet the selection criteria?
                 public boolean hasMoreElements() {
-                    // See if we have a pre-approved entity.
-                    if (null == current) {
-
-                        // Find the first acceptable entity
-                        while ((null == current) && iter.hasMoreElements()) {
-                            current = iter.nextElement();
-                            if (!entitySelector.accept(current)) {
-                                current = null;
-                            }
+                    while (iter.hasMoreElements()) {
+                        current = iter.nextElement();
+                        if (entitySelector.accept(current)) {
+                            return true;
                         }
                     }
-                    return (null != current);
+                    return false;
                 }
 
-                // Get the next entity that meets the selection criteria.
                 public Entity nextElement() {
-                    // Pre-approve an entity.
                     if (!hasMoreElements()) {
                         return null;
                     }
-
-                    // Use the pre-approved entity, and null out our reference.
                     Entity next = current;
                     current = null;
                     return next;
                 }
             };
 
-        } // End use-selector
-
-        // Return the selected entities.
-        return retVal;
-
+            return filteredIter;
+        }
     }
+
 
     /**
      * Count all out-of-game<code>Entity</code>s that pass the given selection
