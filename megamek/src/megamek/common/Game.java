@@ -1694,6 +1694,24 @@ public class Game implements Serializable, IGame {
         return null;
     }
 
+
+
+    private Iterator<Entity> getEntitiesByTargetType(final Coords c, final Entity currentEntity, final boolean isEnemy) {
+        return getSelectedEntities(new EntitySelector() {
+            private Coords coords = c;
+            private Entity friendly = currentEntity;
+
+            public boolean accept(Entity entity) {
+                if (coords.equals(entity.getPosition()) && entity.isTargetable()) {
+                    return isEnemy == entity.isEnemyOf(friendly);
+                }
+                return false;
+            }
+        });
+    }
+
+
+
     /**
      * Returns an <code>Enumeration</code> of the enemy's active entities at the
      * given coordinates.
@@ -1708,18 +1726,7 @@ public class Game implements Serializable, IGame {
     public Iterator<Entity> getEnemyEntities(final Coords c,
             final Entity currentEntity) {
         // Use an EntitySelector to avoid walking the entities vector twice.
-        return getSelectedEntities(new EntitySelector() {
-            private Coords coords = c;
-            private Entity friendly = currentEntity;
-
-            public boolean accept(Entity entity) {
-                if (coords.equals(entity.getPosition())
-                        && entity.isTargetable() && entity.isEnemyOf(friendly)) {
-                    return true;
-                }
-                return false;
-            }
-        });
+        return getEntitiesByTargetType(c, currentEntity, true);
     }
     
     /**
@@ -1753,19 +1760,7 @@ public class Game implements Serializable, IGame {
      */
     public Iterator<Entity> getFriendlyEntities(final Coords c,
             final Entity currentEntity) {
-        // Use an EntitySelector to avoid walking the entities vector twice.
-        return getSelectedEntities(new EntitySelector() {
-            private Coords coords = c;
-            private Entity friendly = currentEntity;
-
-            public boolean accept(Entity entity) {
-                if (coords.equals(entity.getPosition())
-                        && entity.isTargetable() && !entity.isEnemyOf(friendly)) {
-                    return true;
-                }
-                return false;
-            }
-        });
+        return getEntitiesByTargetType(c, currentEntity, false);
     }
 
     /**
