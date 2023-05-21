@@ -3,7 +3,6 @@ package megamek.common.eloRating;
 import megamek.common.IPlayer;
 import megamek.server.victory.VictoryResult;
 
-import java.util.Enumeration;
 import java.util.Vector;
 
 public class PlayerEloRating implements IPlayerEloRating {
