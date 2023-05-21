@@ -34,8 +34,10 @@ public class PlayerEloRatingTest {
         when(victoryResult.getWinningPlayer()).thenReturn(1);
         when(victoryResult.getWinningTeam()).thenReturn(1);
 
+        IPlayerEloRating playerEloRating = new PlayerEloRating();
+
         // Call the method to be tested
-        PlayerEloRating.updateRatings(victoryResult, players);
+        playerEloRating.updateRatings(victoryResult, players);
 
         // Verify that the player ratings are updated correctly
         verify(winningPlayer).setPlayerEloRating(anyInt());
