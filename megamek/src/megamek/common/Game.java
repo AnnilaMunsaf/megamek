@@ -2836,7 +2836,7 @@ public class Game implements Serializable, IGame {
             final EntitySelector entitySelector = selector;
             Enumeration<Entity> iter = vOutOfGame.elements();
 
-            Enumeration<Entity> filteredIter = new Enumeration<Entity>() {
+            return new Enumeration<Entity>() {
                 private Entity current = null;
 
                 public boolean hasMoreElements() {
@@ -2858,8 +2858,6 @@ public class Game implements Serializable, IGame {
                     return next;
                 }
             };
-
-            return filteredIter;
         }
     }
 
