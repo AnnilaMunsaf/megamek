@@ -1574,7 +1574,7 @@ public class Game implements Serializable, IGame {
     public synchronized List<Entity> getEntitiesVector(Coords c, boolean ignore) {
         // Make sure the look-up is initialized
         if (entityPosLookup == null
-                || (entityPosLookup.isEmpty() && entities.size() > 0)) {
+                || (entityPosLookup.isEmpty() && entities.isEmpty())) {
             resetEntityPositionLookup();
         }
         Set<Integer> posEntities = entityPosLookup.get(c);
