@@ -1770,7 +1770,7 @@ public class Server implements Runnable {
                 r.messageId = 7005;
             } else {
                 r.messageId = 7010;
-                r.add(Server.getColorForPlayer(player));
+                r.add(player.getColorForPlayer());
             }
         } else {
             // Team victory
@@ -1790,7 +1790,7 @@ public class Server implements Runnable {
             r = new Report();
             r.type = Report.PUBLIC;
             r.messageId = 7016;
-            r.add(Server.getColorForPlayer(player));
+            r.add(player.getColorForPlayer());
             r.add(player.getBV());
             r.add(Double.toString(Math.round((double) player.getBV() / player.getInitialBV() * 10000.0) / 100.0));
             r.add(player.getInitialBV());
@@ -2446,7 +2446,7 @@ public class Server implements Runnable {
                         r.player = player.getId();
                     }
                     r.messageId = 7016;
-                    r.add(Server.getColorForPlayer(player));
+                    r.add(player.getColorForPlayer());
                     r.add(player.getBV());
                     r.add(Double.toString(Math.round((double) player.getBV() / player.getInitialBV() * 10000.0) / 100.0));
                     r.add(player.getInitialBV());
@@ -3311,7 +3311,7 @@ public class Server implements Runnable {
 
             if (wonPlayer != IPlayer.PLAYER_NONE) {
                 Report r = new Report(7200, Report.PUBLIC);
-                r.add(Server.getColorForPlayer(game.getPlayer(wonPlayer)));
+                r.add(game.getPlayer(wonPlayer).getColorForPlayer());
                 addReport(r);
             }
             if (wonTeam != IPlayer.TEAM_NONE) {
@@ -3833,11 +3833,7 @@ public class Server implements Runnable {
         // send turns to all players
         send(createTurnVectorPacket());
     }
-
-    private static String getColorForPlayer(IPlayer p) {
-        return "<B><font color='" + p.getColour().getHexString(0x00F0F0F0) + "'>" + p.getName() + "</font></B>";
-    }
-
+    
     /**
      * Write the initiative results to the report
      */
@@ -3884,7 +3880,7 @@ public class Server implements Runnable {
                     IPlayer player = getPlayer(t.getPlayerNum());
                     if (null != player) {
                         r = new Report(1050, Report.PUBLIC);
-                        r.add(Server.getColorForPlayer(player));
+                        r.add(player.getColorForPlayer());
                         addReport(r);
                     }
                 }
@@ -3903,7 +3899,7 @@ public class Server implements Runnable {
                 if (team.getNonObserverSize() == 1) {
                     final IPlayer player = team.getNonObserverPlayers().nextElement();
                     r = new Report(1015, Report.PUBLIC);
-                    r.add(Server.getColorForPlayer(player));
+                    r.add(player.getColorForPlayer());
                     r.add(team.getInitiative().toString());
                     addReport(r);
                 } else {

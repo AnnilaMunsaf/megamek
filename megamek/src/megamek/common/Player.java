@@ -366,6 +366,11 @@ public final class Player extends TurnOrdered implements IPlayer {
     }
 
     @Override
+    public String getColorForPlayer() {
+        return "<B><font color='" + getColour().getHexString(0x00F0F0F0) + "'>" + getName() + "</font></B>";
+    }
+
+    @Override
     public void setAdmitsDefeat(boolean admitsDefeat) {
         this.admitsDefeat = admitsDefeat;
     }

@@ -198,4 +198,6 @@ public interface IPlayer extends ITurnOrdered {
     boolean equals(Object obj);
     
     int hashCode();
+
+    String getColorForPlayer();
 }
