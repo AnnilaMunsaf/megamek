@@ -256,7 +256,7 @@ public class Game implements Serializable, IGame {
     }
 
     public void resetMinefieldDensity(Vector<Minefield> newMinefields) {
-        if (newMinefields.size() < 1) {
+        if (newMinefields.isEmpty()) {
             return;
         }
         Vector<Minefield> mfs = minefields.get(newMinefields.firstElement()
@@ -868,7 +868,7 @@ public class Game implements Serializable, IGame {
     public boolean shouldDeployForRound(int round) {
         Vector<Entity> vec = getEntitiesToDeployForRound(round);
 
-        return (((null == vec) || (vec.size() == 0)) ? false : true);
+        return (((null == vec) || (vec.isEmpty())) ? false : true);
     }
 
     private Vector<Entity> getEntitiesToDeployForRound(int round) {
@@ -1574,7 +1574,7 @@ public class Game implements Serializable, IGame {
     public synchronized List<Entity> getEntitiesVector(Coords c, boolean ignore) {
         // Make sure the look-up is initialized
         if (entityPosLookup == null
-                || (entityPosLookup.size() < 1 && entities.size() > 0)) {
+                || (entityPosLookup.isEmpty() && entities.size() > 0)) {
             resetEntityPositionLookup();
         }
         Set<Integer> posEntities = entityPosLookup.get(c);
@@ -1846,7 +1846,7 @@ public class Game implements Serializable, IGame {
      * @param start the index number to start at (not an Entity Id)
      */
     public Entity getNextEntity(int start) {
-        if (entities.size() == 0) {
+        if (entities.isEmpty()) {
             return null;
         }
         start = start % entities.size();
@@ -2124,7 +2124,7 @@ public class Game implements Serializable, IGame {
      * Used when, say, an entity dies mid-phase.
      */
     public void removeTurnFor(Entity entity) {
-        if (turnVector.size() == 0) {
+        if (turnVector.isEmpty()) {
             return;
         }
         // If the game option "move multiple infantry per mech" is selected,
@@ -2622,7 +2622,7 @@ public class Game implements Serializable, IGame {
     }
 
     public void addReports(Vector<Report> v) {
-        if (v.size() == 0) {
+        if (v.isEmpty()) {
             return;
         }
         gameReports.add(roundCount, v);
