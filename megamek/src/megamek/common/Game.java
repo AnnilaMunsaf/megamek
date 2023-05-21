@@ -83,7 +83,7 @@ public class Game implements Serializable, IGame {
 
     private GameOptions options = new GameOptions();
 
-    public IBoard board = new Board();
+    public transient IBoard board = new Board();
 
     private final List<Entity> entities = new CopyOnWriteArrayList<>();
     private Hashtable<Integer, Entity> entityIds = new Hashtable<Integer, Entity>();
