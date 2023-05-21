@@ -499,30 +499,47 @@ public final class Player extends TurnOrdered implements IPlayer {
      */
     @Override
     public int getTurnInitBonus() {
-        int bonusHQ = 0;
-        int bonusMD = 0;
-        int bonusQ = 0;
-        if (game == null) {
-            return 0;
-        }
-        if (game.getEntitiesVector() == null) {
-            return 0;
-        }
-        for (Entity entity : game.getEntitiesVector()) {
-            if (entity.getOwner().equals(this)) {
-                if (game.getOptions().booleanOption(OptionsConstants.ADVANCED_TACOPS_MOBILE_HQS)
-                    && (bonusHQ == 0) && (entity.getHQIniBonus() > 0)) {
-                    bonusHQ = entity.getHQIniBonus();
-                }
+        int bonusHQ = findHighestHQIniBonus();
+        int bonusQ = findHighestQuirkIniBonus();
 
-                if (entity.getQuirkIniBonus() > bonusQ) {
-                    //rather than being cumulative
-                    //http://www.classicbattletech.com/forums/index.php/topic,52903.new.html#new
-                    bonusQ = entity.getQuirkIniBonus();
-                }
+        return bonusHQ + bonusQ;
+    }
+
+    private int findHighestHQIniBonus() {
+        if (game == null || game.getEntitiesVector() == null) {
+            return 0;
+        }
+
+        int highestHQIniBonus = 0;
+
+        for (Entity entity : game.getEntitiesVector()) {
+            if (entity.getOwner().equals(this) && shouldConsiderHQIniBonus(entity)) {
+                highestHQIniBonus = Math.max(highestHQIniBonus, entity.getHQIniBonus());
             }
         }
-        return bonusHQ + bonusMD + bonusQ;
+
+        return highestHQIniBonus;
+    }
+
+    private boolean shouldConsiderHQIniBonus(Entity entity) {
+        return game.getOptions().booleanOption(OptionsConstants.ADVANCED_TACOPS_MOBILE_HQS)
+                && entity.getHQIniBonus() > 0;
+    }
+
+    private int findHighestQuirkIniBonus() {
+        if (game == null || game.getEntitiesVector() == null) {
+            return 0;
+        }
+
+        int highestQuirkIniBonus = 0;
+
+        for (Entity entity : game.getEntitiesVector()) {
+            if (entity.getOwner().equals(this)) {
+                highestQuirkIniBonus = Math.max(highestQuirkIniBonus, entity.getQuirkIniBonus());
+            }
+        }
+
+        return highestQuirkIniBonus;
     }
 
     /**
