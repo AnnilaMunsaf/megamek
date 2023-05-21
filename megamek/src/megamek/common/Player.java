@@ -529,41 +529,48 @@ public final class Player extends TurnOrdered implements IPlayer {
      * @return the bonus to this player's initiative rolls for
      *         the highest value initiative (i.e. the 'commander')
      */
+
     @Override
     public int getCommandBonus() {
-        int commandb = 0;
-        
+        int commandBonus = 0;
+
         if (game == null) {
             return 0;
         }
-        
+
         for (Entity entity : game.getEntitiesVector()) {
-            if ((null != entity.getOwner())
-                    && entity.getOwner().equals(this)
-                    && !entity.isDestroyed()
-                    && entity.isDeployed()
-                    && !entity.isOffBoard()
-                    && entity.getCrew().isActive()
-                    && !entity.isCaptured()
-                    && !(entity instanceof MechWarrior)) {
-                int bonus = 0;
-                if (game.getOptions().booleanOption(OptionsConstants.RPG_COMMAND_INIT)) {
-                    bonus = entity.getCrew().getCommandBonus();
-                }
-                //Even if the RPG option is not enabled, we still get the command bonus provided by special equipment.
-                //Since we are not designating a single force commander at this point, we assume a superheavy tripod
-                //is the force commander if that gives the highest bonus.
-                if (entity.hasCommandConsoleBonus() || entity.getCrew().hasActiveTechOfficer()) {
-                    bonus += 2;
-                }
-                //Once we've gotten the status of the command console (if any), reset the flag that tracks
-                //the previous turn's action.
-                if (bonus > commandb) {
-                    commandb = bonus;
-                }
+            if (isCommandingEntity(entity)) {
+                int bonus = calculateCommandBonus(entity);
+                commandBonus = Math.max(commandBonus, bonus);
             }
         }
-        return commandb;
+
+        return commandBonus;
+    }
+
+    private boolean isCommandingEntity(Entity entity) {
+        return entity.getOwner() != null
+                && entity.getOwner().equals(this)
+                && !entity.isDestroyed()
+                && entity.isDeployed()
+                && !entity.isOffBoard()
+                && entity.getCrew().isActive()
+                && !entity.isCaptured()
+                && !(entity instanceof MechWarrior);
+    }
+
+    private int calculateCommandBonus(Entity entity) {
+        int bonus = 0;
+
+        if (game.getOptions().booleanOption(OptionsConstants.RPG_COMMAND_INIT)) {
+            bonus = entity.getCrew().getCommandBonus();
+        }
+
+        if (entity.hasCommandConsoleBonus() || entity.getCrew().hasActiveTechOfficer()) {
+            bonus += 2;
+        }
+
+        return bonus;
     }
 
     /**
