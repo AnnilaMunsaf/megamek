@@ -4,6 +4,7 @@ package megamek.server.victory;
 
 import megamek.common.IPlayer;
 import megamek.common.Report;
+import megamek.common.eloRating.PlayerEloRating;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -301,6 +303,37 @@ public class VictoryResultTest {
         assertEquals(2, reports.size());
         assertEquals(mockReport, reports.get(0));
 
+    }
+
+    @Test
+    public void testUpdateEloRatings() {
+        // Create mock players
+        IPlayer winningPlayer = mock(IPlayer.class);
+        IPlayer losingPlayer = mock(IPlayer.class);
+
+        // Set up mock behaviors
+        when(winningPlayer.getId()).thenReturn(1);
+        when(winningPlayer.getPlayerEloRating()).thenReturn(2000);
+        when(losingPlayer.getId()).thenReturn(2);
+        when(losingPlayer.getPlayerEloRating()).thenReturn(1800);
+
+        Vector<IPlayer> playersMock = new Vector<>();
+        playersMock.add(winningPlayer);
+        playersMock.add(losingPlayer);
+
+        // Create an instance of VictoryResult
+        VictoryResult victoryResult = new VictoryResult(true, 1, 1);
+
+        // Set up the expected ratings after the update
+        int expectedUpdatedRatingWinner = 2006; // Calculate the expected updated rating based on the formula
+        int expectedUpdatedRatingLoser = 1792; // Calculate the expected updated rating based on the formula
+
+        // Call the updateEloRatings method
+        victoryResult.updateEloRatings(playersMock);
+
+        // Verify that the expected ratings have been set
+        verify(winningPlayer).setPlayerEloRating(expectedUpdatedRatingWinner);
+        verify(losingPlayer).setPlayerEloRating(expectedUpdatedRatingLoser);
     }
 
 
