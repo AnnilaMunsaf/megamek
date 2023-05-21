@@ -432,13 +432,18 @@ public final class Player extends TurnOrdered implements IPlayer {
         int bv = 0;
 
         for (Entity entity : game.getEntitiesVector()) {
-            if (equals(entity.getOwner()) && !entity.isDestroyed()
-                    && !entity.isTrapped()) {
+            if (shouldCalculateBV(entity)) {
                 bv += entity.calculateBattleValue();
             }
         }
+
         return bv;
     }
+
+    private boolean shouldCalculateBV(Entity entity) {
+        return equals(entity.getOwner()) && !entity.isDestroyed() && !entity.isTrapped();
+    }
+
 
     /**
      * get the total BV (unmodified by force size mod) for the units of this
