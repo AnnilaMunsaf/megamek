@@ -25,6 +25,7 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mockito;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -42,35 +43,40 @@ public class ComputeECMTest {
     public void testEntityGetECMInfo() {
         // Mock Player
         IPlayer mockPlayer = Mockito.mock(IPlayer.class);
-        
+
         // Mock the board
         Board mockBoard = Mockito.mock(Board.class);
         Mockito.when(mockBoard.inSpace()).thenReturn(false);
-        
+
         // Mock Options
         GameOptions mockOptions = Mockito.mock(GameOptions.class);
         Mockito.when(mockOptions.booleanOption(Mockito.anyString()))
                 .thenReturn(false);
         Mockito.when(mockOptions.booleanOption("tacops_eccm")).thenReturn(true);
-        
+
         // Mock the game
         Game mockGame = Mockito.mock(Game.class);
         Mockito.when(mockGame.getBoard()).thenReturn(mockBoard);
         Mockito.when(mockGame.getSmokeCloudList()).thenReturn(
                 new ArrayList<SmokeCloud>());
         Mockito.when(mockGame.getOptions()).thenReturn(mockOptions);
-        
+
         ECMInfo ecmInfo, eccmInfo, testInfoECM, testInfoECCM;
         File f;
         MechFileParser mfp;
         Entity archer;
-        
+
         try {
-            f = new File("data/mechfiles/mechs/3039u/Archer ARC-2R.mtf");
-            mfp  = new MechFileParser(f);
+            f = new File("data/mechfiles/mechs/3039u/Archer\\ ARC-2R.mtf");
+            mfp = new MechFileParser(f);
             archer = mfp.getEntity();
-        } catch (Exception exc){
-            TestCase.fail(exc.getMessage());
+        } catch (FileNotFoundException exc) {
+            // Handle the FileNotFoundException
+            TestCase.fail("File not found: " + exc.getMessage());
+            return;
+        } catch (Exception exc) {
+            // Handle other exceptions
+            TestCase.fail("Exception occurred: " + exc.getMessage());
             return;
         }
 
@@ -82,27 +88,27 @@ public class ComputeECMTest {
         TestCase.assertEquals(null, ecmInfo);
         eccmInfo = archer.getECCMInfo();
         TestCase.assertEquals(null, eccmInfo);
-           
+
         /*********************************************************************/
-        // Add ECM        
+        // Add ECM
         eType = EquipmentType.get("ISGuardianECMSuite");
         try {
             archer.addEquipment(eType, Mech.LOC_RT);
         } catch (LocationFullException e) {
             TestCase.fail(e.getMessage());
         }
-        
+
         Coords pos = new Coords(0,0);
         archer.setPosition(pos);
         archer.setOwner(mockPlayer);
         archer.setGame(mockGame);
-        
+
         testInfoECM = new ECMInfo(6, pos, mockPlayer, 1, 0);
         ecmInfo = archer.getECMInfo();
         TestCase.assertEquals(testInfoECM, ecmInfo);
         eccmInfo = archer.getECCMInfo();
         TestCase.assertEquals(null, eccmInfo);
-        
+
         /*********************************************************************/
         // Change mode from ECM to ECCM
         Mounted ecm = null;
@@ -116,14 +122,14 @@ public class ComputeECMTest {
         TestCase.assertEquals(1, rv);
         // Need to update the round  to make the mode switch happen
         archer.newRound(1);
-        
+
         testInfoECCM = new ECMInfo(6, pos, mockPlayer, 0, 0);
         testInfoECCM.setECCMStrength(1);
         ecmInfo = archer.getECMInfo();
         TestCase.assertEquals(null, ecmInfo);
         eccmInfo = archer.getECCMInfo();
         TestCase.assertEquals(testInfoECCM, eccmInfo);
-        
+
         // Add a second ECM
         try {
             archer.addEquipment(eType, Mech.LOC_RT);
@@ -134,7 +140,7 @@ public class ComputeECMTest {
         TestCase.assertEquals(testInfoECM, ecmInfo);
         eccmInfo = archer.getECCMInfo();
         TestCase.assertEquals(testInfoECCM, eccmInfo);
-        
+
         /*********************************************************************/
         // Add an Angel ECM
         eType = EquipmentType.get("ISAngelECMSuite");
@@ -148,8 +154,8 @@ public class ComputeECMTest {
         TestCase.assertEquals(testInfoECM, ecmInfo);
         eccmInfo = archer.getECCMInfo();
         TestCase.assertEquals(testInfoECCM, eccmInfo);
-        
-        // Add a second Angel ECM (adding a second Angel ECM shouldn't have 
+
+        // Add a second Angel ECM (adding a second Angel ECM shouldn't have
         //  any effect)
         try {
             archer.addEquipment(eType, Mech.LOC_LARM);
@@ -160,7 +166,7 @@ public class ComputeECMTest {
         TestCase.assertEquals(testInfoECM, ecmInfo);
         eccmInfo = archer.getECCMInfo();
         TestCase.assertEquals(testInfoECCM, eccmInfo);
-        
+
         archer.setGameOptions();
         ecm = null;
         for (Mounted m : archer.getMisc()) {
@@ -177,10 +183,10 @@ public class ComputeECMTest {
         ecmInfo = archer.getECMInfo();
         TestCase.assertEquals(testInfoECM, ecmInfo);
         eccmInfo = archer.getECCMInfo();
-        TestCase.assertEquals(testInfoECCM, eccmInfo);        
-        
+        TestCase.assertEquals(testInfoECCM, eccmInfo);
+
     }
-    
+
 
     /**
      *  Basic tests for ECM on ground maps, includes single enemy single ally

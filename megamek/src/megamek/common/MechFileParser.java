@@ -76,7 +76,7 @@ public class MechFileParser {
     private static Vector<String> canonUnitNames = null;
     public static final String FILENAME_OFFICIAL_UNITS = "OfficialUnitList.txt"; //$NON-NLS-1$
 
-    public MechFileParser(File f) throws EntityLoadingException {
+    public MechFileParser(File f) throws EntityLoadingException, FileNotFoundException {
         this(f, null);
     }
 

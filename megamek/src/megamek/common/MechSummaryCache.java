@@ -598,6 +598,8 @@ public class MechSummaryCache {
                     ex.printStackTrace(printWriter);
                     loadReport.append(stringWriter.getBuffer()).append("\n");
                     hFailedFiles.put(f.toString(), ex.getMessage());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
             }
         }

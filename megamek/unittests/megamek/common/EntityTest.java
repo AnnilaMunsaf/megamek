@@ -15,14 +15,14 @@
 package megamek.common;
 
 import junit.framework.TestCase;
-import megamek.common.Entity;
-import megamek.common.MechFileParser;
+
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mockito;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.io.File;
 
@@ -77,25 +77,28 @@ public class EntityTest {
         actual = testEntity.calculateBattleValue(true, true);
         TestCase.assertEquals(expected, actual);
     }
-    
+
     @Test
     public void testCalculateWeight() {
-        File f; 
+        File f;
         MechFileParser mfp;
         Entity e;
         int expectedWeight, computedWeight;
-        
+
         // Test 1/1
         try {
-            f = new File("data/mechfiles/mechs/3050U/Exterminator EXT-4A.mtf");
+            f = new File("data/mechfiles/mechs/3050U/Exterminator\\ EXT-4A.mtf");
             mfp  = new MechFileParser(f);
             e = mfp.getEntity();
             expectedWeight = 65;
             computedWeight = (int)e.getWeight();
             TestCase.assertEquals(expectedWeight, computedWeight);
+        }catch (FileNotFoundException exc) {
+            // Handle the FileNotFoundException
+            TestCase.fail("File not found: " + exc.getMessage());
         } catch (Exception exc){
             TestCase.fail(exc.getMessage());
         }
     }
-    
+
 }
