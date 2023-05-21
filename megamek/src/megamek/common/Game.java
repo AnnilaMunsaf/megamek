@@ -132,14 +132,14 @@ public class Game implements Serializable, IGame {
     private Phase lastPhase = Phase.PHASE_UNKNOWN;
 
     // phase state
-    private transient Vector<EntityAction> actions = new Vector<EntityAction>();
-    private transient Vector<AttackAction> pendingCharges = new Vector<AttackAction>();
-    private Vector<AttackAction> pendingRams = new Vector<AttackAction>();
-    private Vector<AttackAction> pendingTeleMissileAttacks = new Vector<AttackAction>();
-    private Vector<PilotingRollData> pilotRolls = new Vector<PilotingRollData>();
-    private Vector<PilotingRollData> extremeGravityRolls = new Vector<PilotingRollData>();
-    private Vector<PilotingRollData> controlRolls = new Vector<PilotingRollData>();
-    private Vector<Team> initiativeRerollRequests = new Vector<Team>();
+    private transient Vector<EntityAction> actions = new Vector<>();
+    private transient Vector<AttackAction> pendingCharges = new Vector<>();
+    private Vector<AttackAction> pendingRams = new Vector<>();
+    private Vector<AttackAction> pendingTeleMissileAttacks = new Vector<>();
+    private Vector<PilotingRollData> pilotRolls = new Vector<>();
+    private Vector<PilotingRollData> extremeGravityRolls = new Vector<>();
+    private Vector<PilotingRollData> controlRolls = new Vector<>();
+    private Vector<Team> initiativeRerollRequests = new Vector<>();
 
     // reports
     private GameReports gameReports = new GameReports();
@@ -2581,20 +2581,10 @@ public class Game implements Serializable, IGame {
      * Resets the PSR list for a given entity.
      */
     public void resetPSRs(Entity entity) {
-        PilotingRollData roll;
-        Vector<Integer> rollsToRemove = new Vector<Integer>();
-        int i = 0;
-
         // first, find all the rolls belonging to the target entity
-        for (i = 0; i < pilotRolls.size(); i++) {
-            roll = pilotRolls.elementAt(i);
-            if (roll.getEntityId() == entity.getId()) {
-                rollsToRemove.addElement(Integer.valueOf(i));
-            }
-        }
-
+        Vector<Integer> rollsToRemove = findAllRollsToRemove(pilotRolls, entity);
         // now, clear them out
-        for (i = rollsToRemove.size() - 1; i > -1; i--) {
+        for (int i = rollsToRemove.size() - 1; i > -1; i--) {
             pilotRolls.removeElementAt(rollsToRemove.elementAt(i).intValue());
         }
     }
@@ -2610,20 +2600,11 @@ public class Game implements Serializable, IGame {
      * Resets the extreme Gravity PSR list for a given entity.
      */
     public void resetExtremeGravityPSRs(Entity entity) {
-        PilotingRollData roll;
-        Vector<Integer> rollsToRemove = new Vector<Integer>();
-        int i = 0;
+        Vector<Integer> rollsToRemove = findAllRollsToRemove(pilotRolls, entity);
 
-        // first, find all the rolls belonging to the target entity
-        for (i = 0; i < extremeGravityRolls.size(); i++) {
-            roll = extremeGravityRolls.elementAt(i);
-            if (roll.getEntityId() == entity.getId()) {
-                rollsToRemove.addElement(Integer.valueOf(i));
-            }
-        }
 
         // now, clear them out
-        for (i = rollsToRemove.size() - 1; i > -1; i--) {
+        for (int i = rollsToRemove.size() - 1; i > -1; i--) {
             extremeGravityRolls.removeElementAt(rollsToRemove.elementAt(i)
                     .intValue());
         }
@@ -3392,20 +3373,10 @@ public class Game implements Serializable, IGame {
      * Resets the Control Roll list for a given entity.
      */
     public void resetControlRolls(Entity entity) {
-        PilotingRollData roll;
-        Vector<Integer> rollsToRemove = new Vector<Integer>();
-        int i = 0;
-
-        // first, find all the rolls belonging to the target entity
-        for (i = 0; i < controlRolls.size(); i++) {
-            roll = controlRolls.elementAt(i);
-            if (roll.getEntityId() == entity.getId()) {
-                rollsToRemove.addElement(Integer.valueOf(i));
-            }
-        }
+        Vector<Integer> rollsToRemove = findAllRollsToRemove(pilotRolls, entity);
 
         // now, clear them out
-        for (i = rollsToRemove.size() - 1; i > -1; i--) {
+        for (int i = rollsToRemove.size() - 1; i > -1; i--) {
             controlRolls.removeElementAt(rollsToRemove.elementAt(i).intValue());
         }
     }
@@ -3653,6 +3624,20 @@ public class Game implements Serializable, IGame {
         }
         return uuid.toString();
 
+    }
+
+    private Vector<Integer> findAllRollsToRemove(Vector<PilotingRollData> rolls, Entity entity){
+        PilotingRollData roll;
+        Vector<Integer> rollsToRemove = new Vector<>();
+
+        for (int i = 0; i < rolls.size(); i++) {
+            roll = controlRolls.elementAt(i);
+            if (roll.getEntityId() == entity.getId()) {
+                rollsToRemove.addElement(Integer.valueOf(i));
+            }
+        }
+
+        return rollsToRemove;
     }
 
 }
