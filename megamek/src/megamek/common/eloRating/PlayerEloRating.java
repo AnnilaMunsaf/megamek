@@ -65,14 +65,14 @@ public class PlayerEloRating implements IPlayerEloRating {
      * @return K-factor
      */
     private static int determineK(int rating) {
-        int K;
+        int k;
         if (rating < 2000) {
-            K = K_FACTOR;
+            k = K_FACTOR;
         } else if (rating < 2400) {
-            K = 24;
+            k = 24;
         } else {
-            K = 16;
+            k = 16;
         }
-        return K;
+        return k;
     }
 }
