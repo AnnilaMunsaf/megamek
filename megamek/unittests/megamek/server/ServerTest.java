@@ -1,9 +1,9 @@
 package megamek.server;
 
-import megamek.common.Game;
-import megamek.common.IGame;
-import megamek.common.IPlayer;
-import megamek.common.Player;
+import megamek.common.*;
+import megamek.server.victory.Victory;
+import megamek.server.victory.VictoryResult;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,9 +11,7 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -24,11 +22,15 @@ public class ServerTest {
     IGame game;
     Player player2;
 
+    private VictoryResult victoryResultMock;
+
+
 
     @Before
     public void setUp() {
         game = mock(Game.class);
         player2 = new Player(2, "Player2");
+        victoryResultMock = Mockito.mock(VictoryResult.class);
     }
 
     @Test
@@ -136,6 +138,66 @@ public class ServerTest {
 
     }
 
+
+    @Test
+    public void testVictory() throws IOException {
+
+        Victory victoryMock = Mockito.mock(Victory.class);
+        HashMap victoryContextMock = mock(HashMap.class);
+
+        // Create a mock player vector
+        Vector<IPlayer> playersVector = new Vector<>();
+        for (int i = 0; i < 2; i++) {
+            IPlayer player = mock(IPlayer.class);
+            playersVector.add(player);
+        }
+
+        Report report1 = new Report();
+        Report report2 = new Report();
+        ArrayList<Report> reports = new ArrayList<>();
+        reports.add(report1);
+        reports.add(report2);
+
+        when(game.getVictory()).thenReturn(victoryMock);
+        when(game.getVictoryContext()).thenReturn(victoryContextMock);
+        when(victoryMock.checkForVictory(game, game.getVictoryContext())).thenReturn(victoryResultMock);
+
+        when(game.getPlayersVector()).thenReturn(playersVector);
+        Mockito.when(game.getEntities()).thenReturn(mock(Iterator.class));
+        Mockito.when(game.getPlayers()).thenReturn(mock(Enumeration.class));
+        Mockito.when(game.getAttacks()).thenReturn(mock(Enumeration.class));
+
+        Server server = new Server("Server 6", 5);
+        server.setGame(game);
+        game.setVictoryContext(victoryContextMock);
+
+
+        // Set up mock VictoryResult
+        when(victoryResultMock.getReports()).thenReturn(reports);
+        when(victoryResultMock.victory()).thenReturn(true);
+        when(victoryResultMock.isDraw()).thenReturn(true);
+        when(victoryResultMock.getWinningPlayer()).thenReturn(IPlayer.PLAYER_NONE);
+        when(victoryResultMock.getWinningTeam()).thenReturn(IPlayer.TEAM_NONE);
+
+
+
+        // Call the victory() method
+        boolean result = server.victory();
+
+
+        // Verify that the expected methods were called
+        verify(game).getVictory();
+        verify(victoryMock).checkForVictory(game, game.getVictoryContext());
+        verify(victoryResultMock).updateEloRatings(playersVector);
+        verify(victoryResultMock, Mockito.times(2)).victory();
+        verify(victoryResultMock).isDraw();
+        verify(victoryResultMock).getWinningPlayer();
+        verify(victoryResultMock).getWinningTeam();
+
+        // Assert the result
+        Assert.assertTrue(result);
+        server.die();
+    }
 
 
 
