@@ -134,12 +134,12 @@ public class Game implements Serializable, IGame {
     // phase state
     private transient Vector<EntityAction> actions = new Vector<>();
     private transient Vector<AttackAction> pendingCharges = new Vector<>();
-    private Vector<AttackAction> pendingRams = new Vector<>();
-    private Vector<AttackAction> pendingTeleMissileAttacks = new Vector<>();
-    private Vector<PilotingRollData> pilotRolls = new Vector<>();
-    private Vector<PilotingRollData> extremeGravityRolls = new Vector<>();
-    private Vector<PilotingRollData> controlRolls = new Vector<>();
-    private Vector<Team> initiativeRerollRequests = new Vector<>();
+    private transient Vector<AttackAction> pendingRams = new Vector<>();
+    private transient Vector<AttackAction> pendingTeleMissileAttacks = new Vector<>();
+    private transient Vector<PilotingRollData> pilotRolls = new Vector<>();
+    private transient Vector<PilotingRollData> extremeGravityRolls = new Vector<>();
+    private transient Vector<PilotingRollData> controlRolls = new Vector<>();
+    private transient Vector<Team> initiativeRerollRequests = new Vector<>();
 
     // reports
     private GameReports gameReports = new GameReports();
@@ -152,14 +152,14 @@ public class Game implements Serializable, IGame {
     private int lastDeploymentRound = 0;
 
     private Hashtable<Coords, Vector<Minefield>> minefields = new Hashtable<Coords, Vector<Minefield>>();
-    private Vector<Minefield> vibrabombs = new Vector<Minefield>();
-    private Vector<AttackHandler> attacks = new Vector<AttackHandler>();
-    private Vector<ArtilleryAttackAction> offboardArtilleryAttacks = new Vector<ArtilleryAttackAction>();
+    private transient Vector<Minefield> vibrabombs = new Vector<Minefield>();
+    private transient Vector<AttackHandler> attacks = new Vector<AttackHandler>();
+    private transient Vector<ArtilleryAttackAction> offboardArtilleryAttacks = new Vector<ArtilleryAttackAction>();
 
     private int lastEntityId;
 
-    private Vector<TagInfo> tagInfoForTurn = new Vector<TagInfo>();
-    private Vector<Flare> flares = new Vector<Flare>();
+    private transient Vector<TagInfo> tagInfoForTurn = new Vector<TagInfo>();
+    private transient Vector<Flare> flares = new Vector<Flare>();
     private HashSet<Coords> illuminatedPositions =
             new HashSet<Coords>();
 
