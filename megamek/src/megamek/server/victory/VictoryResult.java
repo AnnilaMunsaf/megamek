@@ -15,8 +15,8 @@ package megamek.server.victory;
 
 import megamek.common.IPlayer;
 import megamek.common.Report;
-import megamek.common.eloRating.IPlayerEloRating;
-import megamek.common.eloRating.PlayerEloRating;
+import megamek.common.elo_rating.IPlayerEloRating;
+import megamek.common.elo_rating.PlayerEloRating;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

@@ -1,4 +1,4 @@
-package megamek.common.eloRating;
+package megamek.common.elo_rating;
 
 import megamek.common.IPlayer;
 import megamek.server.victory.VictoryResult;
