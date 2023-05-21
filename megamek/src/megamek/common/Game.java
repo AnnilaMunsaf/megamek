@@ -1393,8 +1393,6 @@ public class Game implements Serializable, IGame {
             // This next statement has been cluttering up double-blind
             // logs for quite a while now. I'm assuming it's no longer
             // useful.
-            // System.err.println("Game#removeEntity: could not find entity to
-            // remove");
             return;
         }
 
@@ -1574,7 +1572,6 @@ public class Game implements Serializable, IGame {
      * @return <code>List<Entity></code>
      */
     public synchronized List<Entity> getEntitiesVector(Coords c, boolean ignore) {
-        //checkPositionCacheConsistency();
         // Make sure the look-up is initialized
         if (entityPosLookup == null
                 || (entityPosLookup.size() < 1 && entities.size() > 0)) {
@@ -2270,85 +2267,6 @@ public class Game implements Serializable, IGame {
         turnVector.removeAll(turnsToRemove);
         return turnsToRemove.size();
     }
-
-    /**
-     * Check each player for the presence of a Battle Armor squad equipped with
-     * a Magnetic Clamp. If one unit is found, update that player's units to
-     * allow the squad to be transported.
-     * <p/>
-     * This method should be called </b>*ONCE*</b> per game, after all units for
-     * all players have been loaded.
-     *
-     * @return <code>true</code> if a unit was updated, <code>false</code> if no
-     *         player has a Battle Armor squad equipped with a Magnetic Clamp.
-     */
-    /* Taharqa: I am removing this function and instead I am simply adding clamp mounts to all
-     * non omni/ none BA handled mechs in the game.addEntity routine - It should not be too much memory to
-     * do this and it allows us to load these units in the lobby
-    public boolean checkForMagneticClamp() {
-
-        // Declare local variables.
-        Player player = null;
-        Entity unit = null;
-        boolean result;
-        Hashtable<Player, Boolean> playerFlags = null;
-
-        // Assume that we don't need new transporters.
-        result = false;
-
-        // Create a map of flags for the players.
-        playerFlags = new Hashtable<Player, Boolean>(getNoOfPlayers());
-
-        // Walk through the game's entities.
-        for (Enumeration<Entity> i = entities.elements(); i.hasMoreElements();) {
-
-            // Is the next unit a Battle Armor squad?
-            unit = i.nextElement();
-            if (unit instanceof BattleArmor) {
-
-                if (unit.countWorkingMisc(MiscType.F_MAGNETIC_CLAMP) > 0) {
-                    // The unit's player needs new transporters.
-                    result = true;
-                    playerFlags.put(unit.getOwner(), Boolean.TRUE);
-
-                }
-
-            } // End unit-is-BattleArmor
-
-        } // Handle the next entity.
-
-        // Do we need to add any Magnetic Clamp transporters?
-        if (result) {
-
-            // Walk through the game's entities again.
-            for (Enumeration<Entity> i = entities.elements(); i
-                    .hasMoreElements();) {
-
-                // Get this unit's player.
-                unit = i.nextElement();
-                player = unit.getOwner();
-
-                // Does this player need updated transporters?
-                if (Boolean.TRUE.equals(playerFlags.get(player))) {
-
-                    // Add the appropriate transporter to the unit.
-                    if (!unit.isOmni() && !unit.hasBattleArmorHandles() && (unit instanceof Mech)) {
-                        unit.addTransporter(new ClampMountMech());
-                    } else if (!unit.isOmni() && !unit.hasBattleArmorHandles() && (unit instanceof Tank)
-                            && !(unit instanceof VTOL)) {
-                        unit.addTransporter(new ClampMountTank());
-                    }
-
-                }
-            } // End player-needs-transports
-
-        } // Handle the next unit.
-
-        // Return the result.
-        return result;
-
-    } // End private boolean checkForMagneticClamp()
-     */
 
     /**
      * Adds the specified action to the actions list for this phase.
