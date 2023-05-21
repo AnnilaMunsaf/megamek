@@ -31450,7 +31450,8 @@ public class Server implements Runnable {
                 if (game.getPhase().isBefore(Phase.PHASE_DEPLOYMENT)) {
                     MapSettings newSettings = (MapSettings) packet.getObject(0);
                     if (!mapSettings.equalMapGenParameters(newSettings)) {
-                        sendServerChat(playerText + player.getName() + " changed map settings");
+                        String name = player != null ? playerText + player.getName() : playerText;
+                        sendServerChat((name) + " changed map settings");
                     }
                     mapSettings = newSettings;
                     mapSettings.setBoardsAvailableVector(scanForBoards(new BoardDimensions(
@@ -31472,7 +31473,8 @@ public class Server implements Runnable {
                 if (game.getPhase().isBefore(Phase.PHASE_DEPLOYMENT)) {
                     MapSettings newSettings = (MapSettings) packet.getObject(0);
                     if (!mapSettings.equalMapGenParameters(newSettings)) {
-                        sendServerChat(playerText + player.getName() + " changed map dimensions");
+                        String name = player != null ? playerText + player.getName() : playerText;
+                        sendServerChat((name) + " changed map dimensions");
                     }
                     mapSettings = newSettings;
                     mapSettings.setBoardsAvailableVector(scanForBoards(new BoardDimensions(
@@ -31494,7 +31496,8 @@ public class Server implements Runnable {
                 // MapSettings newSettings = (MapSettings) packet.getObject(0);
                 if (game.getPhase().isBefore(Phase.PHASE_DEPLOYMENT)) {
                     PlanetaryConditions conditions = (PlanetaryConditions) packet.getObject(0);
-                    sendServerChat(playerText + player.getName() + " changed planetary conditions");
+                    String name = player != null ? playerText + player.getName() : playerText;
+                    sendServerChat((name) + " changed planetary conditions");
                     game.setPlanetaryConditions(conditions);
                     resetPlayersDone();
                     transmitAllPlayerDones();
