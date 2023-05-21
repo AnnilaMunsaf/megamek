@@ -6,10 +6,10 @@ import megamek.server.victory.VictoryResult;
 import java.util.Enumeration;
 import java.util.Vector;
 
-public class PlayerEloRating {
+public class PlayerEloRating implements IPlayerEloRating {
     private static final int K_FACTOR = 32; // K-factor determines the magnitude of rating changes
 
-    public static void updateRatings(VictoryResult victoryResult, Vector<IPlayer> players) {
+    public void updateRatings(VictoryResult victoryResult, Vector<IPlayer> players) {
         int winningPlayerId = victoryResult.getWinningPlayer();
         int winningTeamId = victoryResult.getWinningTeam();
 

@@ -13,14 +13,17 @@
  */
 package megamek.server.victory;
 
+import megamek.common.IPlayer;
+import megamek.common.Report;
+import megamek.common.eloRating.IPlayerEloRating;
+import megamek.common.eloRating.PlayerEloRating;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.*;
-
-import megamek.common.IPlayer;
-import megamek.common.Player;
-import megamek.common.Report;
-import megamek.common.eloRating.PlayerEloRating;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
 
 /**
  * quick implementation of a Victory.Result stores player scores and a flag if
@@ -98,7 +101,8 @@ public class VictoryResult implements IResult {
     }
 
     public void updateEloRatings(Vector<IPlayer> players) {
-        PlayerEloRating.updateRatings(this, players);
+        IPlayerEloRating playerEloRating = new PlayerEloRating();
+        playerEloRating.updateRatings(this, players);
     }
 
     protected void updateHiScore() {
