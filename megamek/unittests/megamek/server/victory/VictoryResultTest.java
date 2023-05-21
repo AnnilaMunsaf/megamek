@@ -4,7 +4,6 @@ package megamek.server.victory;
 
 import megamek.common.IPlayer;
 import megamek.common.Report;
-import megamek.common.eloRating.PlayerEloRating;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
