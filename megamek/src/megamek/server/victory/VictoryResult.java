@@ -61,43 +61,34 @@ public class VictoryResult implements IResult {
         return new VictoryResult(true, IPlayer.PLAYER_NONE, IPlayer.TEAM_NONE);
     }
 
-    public int getWinningPlayer() {
+    private int getWinner(HashMap<Integer, Double> score, int defaultId) {
         double max = Double.MIN_VALUE;
-        int maxPlayer = IPlayer.PLAYER_NONE;
+        int maxWinnerId = defaultId;
         boolean draw = false;
-        for (Map.Entry<Integer, Double> entry : playerScore.entrySet()) {
+
+        for (Map.Entry<Integer, Double> entry : score.entrySet()) {
             if (entry.getValue() == max) {
                 draw = true;
             }
             if (entry.getValue() > max) {
                 draw = false;
                 max = entry.getValue();
-                maxPlayer = entry.getKey();
+                maxWinnerId = entry.getKey();
             }
         }
+
         if (draw)
-            return IPlayer.PLAYER_NONE;
-        return maxPlayer;
+            return defaultId;
+        return maxWinnerId;
+    }
+
+
+    public int getWinningPlayer() {
+        return getWinner(playerScore, IPlayer.PLAYER_NONE);
     }
 
     public int getWinningTeam() {
-        double max = Double.MIN_VALUE;
-        int maxTeam = IPlayer.TEAM_NONE;
-        boolean draw = false;
-
-        for (Map.Entry<Integer, Double> entry : teamScore.entrySet()) {
-            double score = entry.getValue();
-            if (score == max) {
-                draw = true;
-            }
-            if (score > max) {
-                draw = false;
-                max = score;
-                maxTeam = entry.getKey();
-            }
-        }
-
-        return draw ? IPlayer.TEAM_NONE : maxTeam;
+        return getWinner(teamScore, IPlayer.TEAM_NONE);
     }
 
     public void updateEloRatings(Vector<IPlayer> players) {
