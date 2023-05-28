@@ -67,7 +67,7 @@ public class ComputeECMTest {
         Entity archer;
 
         try {
-            f = new File("data/mechfiles/mechs/3039u/Archer\\ ARC-2R.mtf");
+            f = new File("data/mechfiles/mechs/3039u/Archer ARC-2R.mtf");
             mfp = new MechFileParser(f);
             archer = mfp.getEntity();
         } catch (FileNotFoundException exc) {
